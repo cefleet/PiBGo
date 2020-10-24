@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Python Games</title>
+
+    </head>
+    <body>
+        <h1>Python Games</h1>
+        <div id="loading" style="display: none">Loading ...</div>
+        <iframe id="myGame" 
+                width="500" 
+                height="500" 
+                style="border:none;background:black; display:none;">
+            </iframe>
+        <ul>
+            <li id="game" class="play_game">Play Game</li>            
+        </ul>
+        <script>
+            document.querySelectorAll(".play_game").forEach(link=>{
+                link.addEventListener("click", (evt)=>get_port(evt.target.id))
+            })
+
+            const get_port = (query)=>{
+                document.querySelector("#loading")
+                .setAttribute("style", "display:block")
+                fetch(`/${query}`)
+                .then(resp=>resp.json())
+                .then(res=>{
+                    console.log(res)
+                    const game = document.querySelector("#myGame")
+                    game.setAttribute("src", `http://localhost:${res.port}`)
+                    game.setAttribute("style", "border:none;background:black; display:block;")
+                document.querySelector("#loading")
+                .setAttribute("style", "display:none")
+                })
+            }
+        </script>
+    </body>
+</html>
